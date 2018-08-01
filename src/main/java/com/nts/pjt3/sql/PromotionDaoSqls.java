@@ -1,8 +1,12 @@
 package com.nts.pjt3.sql;
 
 public class PromotionDaoSqls {
-	public static final String SELECT_ALL = "SELECT pro.id, pro.product_id, p.category_id, c.name as categoryName, "
-		+ "p.description, img.id as productImageId FROM promotion pro INNER JOIN product p ON pro.product_id = p.id "
-		+ "INNER JOIN category c ON p.category_id = c.id INNER JOIN product_image img ON p.id = img.product_id "
-		+ "WHERE img.type = 'ma'";
+	public static final String SELECT_ALL = "SELECT promotion.id, promotion.product_id, "
+		+ "product.category_id, product.description, "
+		+ "category.name as categoryName, "
+		+ "product_image.id as productImageId FROM promotion "
+		+ "INNER JOIN product ON promotion.product_id = product.id "
+		+ "INNER JOIN category ON product.category_id = category.id "
+		+ "INNER JOIN product_image ON product.id = product_image.product_id "
+		+ "WHERE product_image.type = 'ma'";
 }

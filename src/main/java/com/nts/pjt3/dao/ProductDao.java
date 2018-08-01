@@ -50,6 +50,6 @@ public class ProductDao {
 
 	public int countProductByCategory(int categoryId) {
 		Map<String, Integer> params = Collections.singletonMap("categoryId", categoryId);
-		return jdbc.queryForObject(ProductDaoSqls.COUNT_CATEGORY_PRODUCTS, params, Integer.class);
+		return jdbc.queryForObject(ProductDaoSqls.COUNT_PRODUCTS_CATEGORY, params, Integer.class);
 	}
 }

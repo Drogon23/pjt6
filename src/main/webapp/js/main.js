@@ -2,15 +2,16 @@
 document.addEventListener("DOMContentLoaded", function() {
 
 	loadPromotions();
-	loadCategories();
+	initCategories();
+	
 
-	let category = document.querySelector(".section_event_tab");
-	category.addEventListener("clicked", function(evt) {
-
+	let categoryBox = document.querySelector(".section_event_tab");
+	categoryBox.addEventListener("click", function(evt) {
+		console.log("dadsf");
 	});
 });
 
-function loadCategories() {
+function initCategories() {
 
 	let oReq = new XMLHttpRequest();
 
@@ -18,11 +19,13 @@ function loadCategories() {
 		let data = JSON.parse(this.responseText);
 		let parent = document.querySelector(".event_tab_lst");
 		let count = 0;
+		const templete = document.querySelector("#categories");
+	
 		data.items.forEach(function(cate) {
-			let templete = document.querySelector("#categories").innerHTML;
-			templete = templete.replace("{id}", cate.id).replace("{name}",
+			let templeteHtml = templete.innerHTML;
+			templeteHtml = templeteHtml.replace("{id}", cate.id).replace("{name}",
 					cate.name);
-			parent.innerHTML += templete;
+			parent.innerHTML += templeteHtml;
 			count += cate.count;
 		});
 		let countTemplete = document.querySelector("#productsCount").innerHTML;
@@ -48,10 +51,59 @@ function loadPromotions() {
 					.replace("{productImageId}", promotion.productImageId);
 			parent.innerHTML += templete;
 		});
-
+		promotionAnimator();
+		
+		
 	});
 
 	oReq.open("GET", "/naver/promotions");
 	oReq.send();
-
 }
+
+//TODO 구조 다시 생각해보기
+var promotionImgLocation = 0;
+function promotionAnimator(){
+	let promotionUl = document.querySelector(".visual_img");
+	let length = promotionUl.childElementCount;
+	promotionImgLocation -= 100;
+	
+	setTimeout(()=>{
+		
+		if(promotionImgLocation == 0){
+			for(var i=0; i<length-3; i++){
+				promotionUl.children[i].style.transition = "all 2s ease";
+				promotionUl.children[i].style.left = promotionImgLocation+"%";
+			}
+			promotionUl.children[length-1].style.left = length*(-100)+"%";
+			for(let i=length-3; i<length-1; i++){
+				promotionUl.children[i].style.transition = "0s";
+			}
+		}else{
+			if(promotionImgLocation == -100){
+				promotionUl.children[length-1].style.transition = "0s";
+			}
+			for(var i=0; i<length; i++){
+				promotionUl.children[i].style.left = promotionImgLocation+"%";
+			}
+		}
+		if(promotionImgLocation < (length-4)*-100){
+			for(let i=length-3; i<length; i++){
+				promotionUl.children[i].style.transition = "all 2s ease";
+			}		
+		}
+		if(promotionImgLocation < (length-3)*-100){
+			for(let i=0; i<length-3; i++){
+				promotionUl.children[i].style.left = "100%";
+				promotionUl.children[i].style.transition = "0s";
+			}
+		}
+		if(promotionImgLocation < (length-2)*-100){
+			promotionImgLocation = 100;
+		}
+		
+		promotionAnimator();
+	}, 2000);
+	
+	
+}
+
