@@ -1,5 +1,7 @@
 package com.nts.pjt3.dto;
 
+import java.util.Date;
+
 public class DisplayInfoImage {
 	private int id;
 	private int displayInfoId;
@@ -8,8 +10,8 @@ public class DisplayInfoImage {
 	private String saveFileName;
 	private String contentType;
 	private int deleteFlag;
-	private String createDate;
-	private String modifyDate;
+	private Date createDate;
+	private Date modifyDate;
 
 	public int getId() {
 		return id;
@@ -67,19 +69,19 @@ public class DisplayInfoImage {
 		this.deleteFlag = deleteFlag;
 	}
 
-	public String getCreateDate() {
+	public Date getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(String createDate) {
+	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
 
-	public String getModifyDate() {
+	public Date getModifyDate() {
 		return modifyDate;
 	}
 
-	public void setModifyDate(String modifyDate) {
+	public void setModifyDate(Date modifyDate) {
 		this.modifyDate = modifyDate;
 	}
 

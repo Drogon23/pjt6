@@ -1,13 +1,15 @@
 package com.nts.pjt3.dto;
 
+import java.util.Date;
+
 public class ProductPrice {
 	private int id;
 	private int productId;
 	private String priceTypeName;
 	private int price;
 	private int discountRate;
-	private String createDate;
-	private String modifyDate;
+	private Date createDate;
+	private Date modifyDate;
 
 	public int getId() {
 		return id;
@@ -49,19 +51,19 @@ public class ProductPrice {
 		this.discountRate = discountRate;
 	}
 
-	public String getCreateDate() {
+	public Date getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(String createDate) {
+	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
 
-	public String getModifyDate() {
+	public Date getModifyDate() {
 		return modifyDate;
 	}
 
-	public void setModifyDate(String modifyDate) {
+	public void setModifyDate(Date modifyDate) {
 		this.modifyDate = modifyDate;
 	}
 
