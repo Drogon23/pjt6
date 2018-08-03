@@ -10,7 +10,7 @@ public class ProductDaoSqls {
 		+ "FROM display_info "
 		+ "INNER JOIN product ON product.id = display_info.product_id "
 		+ "INNER JOIN category ON product.category_id = category.id "
-		+ "ORDER BY product.id DESC limit :start, :limit";
+		+ "ORDER BY product.id ASC limit :start, :limit";
 
 	public static final String SELECT_BY_CATEGORY = "SELECT product.id, product.category_id, product.description, "
 		+ "product.content, product.event, "
@@ -21,7 +21,7 @@ public class ProductDaoSqls {
 		+ "FROM display_info "
 		+ "INNER JOIN product ON product.id = display_info.product_id "
 		+ "INNER JOIN category ON product.category_id = category.id "
-		+ "WHERE product.category_id = :categoryId ORDER BY product.id DESC limit :start, :limit";
+		+ "WHERE product.category_id = :categoryId ORDER BY product.id ASC limit :start, :limit";
 
 	public static final String SELECT_ONE = "SELECT product.id, product.category_id, product.description, "
 		+ "product.content, product.event, "
