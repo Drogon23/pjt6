@@ -13,7 +13,7 @@ import com.nts.pjt3.service.ProductPriceService;
 public class ProductPriceServiceImpl implements ProductPriceService {
 
 	@Autowired
-	ProductPriceDao productPriceDao;
+	private ProductPriceDao productPriceDao;
 
 	@Override
 	public List<ProductPrice> getProductPrices(int productId) {

@@ -3,13 +3,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	loadPromotions();
 	initCategories();
-	let categoryBox = document.querySelector(".section_event_tab");
+	let categoryBox = document.querySelector("div.section_event_tab");
 	categoryBox.addEventListener("click", function(evt){
 		changeCategory(evt);
 	});
+	
 	getProducts(getStartValue(), getCategoryId());
 	
-	let moreButton = document.querySelector(".more");
+	let moreButton = document.querySelector("div.more");
 	moreButton.addEventListener("click", function(evt){
 		if(evt.target.className ==="btn"){
 			getProducts(getStartValue(), getCategoryId());
@@ -24,17 +25,12 @@ function initCategories() {
 
 	oReq.addEventListener("load", function() {
 		let data = JSON.parse(this.responseText);
-		let parent = document.querySelector(".event_tab_lst");
-		const templete = document.querySelector("#categories");
-	
-		data.items.forEach(function(cate) {
-			let templeteHtml = templete.innerHTML;
-			templeteHtml = templeteHtml.replace("{id}", cate.id).replace("{name}",cate.name);
-			parent.innerHTML += templeteHtml;
-		});
+		let parent = document.querySelector("ul.event_tab_lst");
+		const template = document.querySelector("#categories").innerText;
+		addCompiledTemplate(data, parent, template);		
 	});
 
-	oReq.open("GET", "/naver/categories");
+	oReq.open("GET", "api/categories");
 	oReq.send();
 }
 
@@ -44,25 +40,19 @@ function loadPromotions() {
 
 	oReq.addEventListener("load", function() {
 		let data = JSON.parse(this.responseText);
-		let parent = document.querySelector(".visual_img");
-		const templete = document.querySelector("#promotion_item");
-		
-		data.items.forEach(function(promotion) {
-			let templeteHtml = templete.innerHTML;
-			templeteHtml = templeteHtml.replace("{productId}", promotion.productId)
-					.replace("{productImageId}", promotion.productImageId);
-			parent.innerHTML += templeteHtml;
-		});
+		let parent = document.querySelector("ul.visual_img");
+		const template = document.querySelector("#promotion_item").innerText;
+		addCompiledTemplate(data, parent, template);		
 		promotionSetAnimator();
 	});
 
-	oReq.open("GET", "/naver/promotions");
+	oReq.open("GET", "api/promotions");
 	oReq.send();
 }
 
 
 function promotionSetAnimator(){
-	let promotionUl = document.querySelector(".visual_img");	
+	let promotionUl = document.querySelector("ul.visual_img");	
 	let length = promotionUl.childElementCount;
 	if(length>1){
 		promotionAnimator(promotionUl);
@@ -84,25 +74,25 @@ function promotionAnimator(promotionUl){
 		
 		promotionAnimator(promotionUl);
 		
-		setTimeout(()=>{
-			//화면밖으로 나간 이미지 맨 뒤로 다시 붙임
-			promotionUl.appendChild(promotionUl.children[0]);
-			//애니메이션 효과 없애고 위치값 초기화
+		setTimeout(()=>{			
+			// 애니메이션 효과 없애고 위치값 초기화
 			for(let i=0; i<2; i++){
 				promotionUl.children[i].style.transition = "0s";
 				promotionUl.children[i].style.transform = "";
 			}
-		}, 1000);
+			// 화면밖으로 나간 이미지 맨 뒤로 다시 붙임
+			promotionUl.appendChild(promotionUl.children[0]);
+		}, 1200);
 	}, 1500);	
 }
 
 function changeCategory(evt){
 	let category = evt.target.closest("li");
 	if(category != null){
-		document.querySelector(".anchor.active").setAttribute("class", "anchor");
+		document.querySelector("a.anchor.active").setAttribute("class", "anchor");
 		category.firstElementChild.setAttribute("class", "anchor active");
 		document.querySelector("#start").value = 0;
-		let productsList = document.querySelectorAll(".lst_event_box");
+		let productsList = document.querySelectorAll("ul.lst_event_box");
 		productsList.forEach(function(child){
 			child.innerHTML="";
 		})
@@ -122,30 +112,27 @@ function getProducts(start, categoryId){
 		checkPaging();
 	});
 
-	oReq.open("GET", "/naver/products?start="+start+"&categoryId="+categoryId);
+	oReq.open("GET", "api/products?start="+start+"&categoryId="+categoryId);
 	oReq.send();
 }
 
 function modifyProductsCount(data){
 	let totalCount = data.totalCount;
-	let countTemplete = document.querySelector("#products_count").innerHTML;
-	countTemplete = countTemplete.replace("{count}", totalCount);
+	const template = document.querySelector("#products_count").innerText;
+	let bindTemplate = Handlebars.compile(template);
 	document.querySelector("#total_count").value = totalCount;
-	let parentCount = document.querySelector(".section_event_lst");
+	let parentCount = document.querySelector("div.section_event_lst");
 	parentCount.firstElementChild.remove();
-	parentCount.insertAdjacentHTML("afterbegin", countTemplete);
+	parentCount.insertAdjacentHTML("afterbegin", bindTemplate(data));
 }
 
 function loadProducts(data){
-	const templete = document.querySelector("#item_list");
-	let parent = document.querySelectorAll(".lst_event_box");
+	const template = document.querySelector("#item_list").innerText;
+	let parent = document.querySelectorAll("ul.lst_event_box");
 	let index = 0;
+	let bindTemplate = Handlebars.compile(template);
 	data.products.forEach(function(product){
-		let templeteHtml = templete.innerHTML;
-		templeteHtml = templeteHtml.replace(/{displayInfoId}/gi, product.displayInfoId)
-									.replace(/{id}/gi, product.id).replace(/{description}/gi, product.description)
-									.replace(/{placeName}/gi, product.placeName).replace(/{content}/gi,product.content);
-		parent[(index++)%2].insertAdjacentHTML("beforeend",templeteHtml);
+		parent[(index++)%2].insertAdjacentHTML("beforeend",bindTemplate(product));
 	});
 	
 }
@@ -153,26 +140,29 @@ function loadProducts(data){
 function changeStartValue(data){
 	document.querySelector("#start").value = data.productsCount+parseInt(document.querySelector("#start").value);
 }
-
+  
 function checkPaging(){
-	let moreButton = document.querySelector(".btn");
-	if(moreButton == null){
-		createMoreButton();
-	}
+	let moreButton = document.querySelector("button.btn");
 	let totalCount = parseInt(document.querySelector("#total_count").value);
 	let start = getStartValue();
 	if(totalCount<5 || start==totalCount){
-		moreButton.remove();
+		moreButton.style.display = "none";
+	}else{
+		moreButton.style.display = "block";
 	}
 }
 
-function createMoreButton(){
-	let btn = "<button class=\"btn\"><span>더보기</span></button>";
-	 document.querySelector(".more").insertAdjacentHTML("afterbegin", btn);
+
+function addCompiledTemplate(data, parent, template){
+	let bindTemplate = Handlebars.compile(template);
+	let resultHtml = data.items.reduce(function(prev,next){
+		return prev + bindTemplate(next);
+	},"");
+	parent.innerHTML += resultHtml;	
 }
 
 function getCategoryId(){
-	let currentCategory = document.querySelector(".anchor.active").closest("li");
+	let currentCategory = document.querySelector("a.anchor.active").closest("li");
 	return currentCategory.getAttribute("data-category");
 }
 

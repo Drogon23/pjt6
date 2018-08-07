@@ -18,7 +18,7 @@ import com.nts.pjt3.dto.ProductPrice;
 @ContextConfiguration(classes = {ApplicationConfig.class})
 public class ProductPriceDaoTest {
 	@Autowired
-	ProductPriceDao productPriceDao;
+	private ProductPriceDao productPriceDao;
 
 	@Test
 	public void testSelectAllByProductId() {

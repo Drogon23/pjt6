@@ -19,7 +19,7 @@ import com.nts.pjt3.dto.Category;
 public class CategoryDaoTest {
 
 	@Autowired
-	CategoryDao categoryDao;
+	private CategoryDao categoryDao;
 
 	@Test
 	public void testSelectAll() {

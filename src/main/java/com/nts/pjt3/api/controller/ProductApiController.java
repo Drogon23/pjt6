@@ -1,4 +1,4 @@
-package com.nts.pjt3.controller;
+package com.nts.pjt3.api.controller;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -22,18 +22,18 @@ import com.nts.pjt3.service.ProductPriceService;
 import com.nts.pjt3.service.ProductService;
 
 @RestController
-@RequestMapping(path = "/products")
-public class ProductController {
+@RequestMapping(path = "api/products")
+public class ProductApiController {
 
 	private static final int ALL = 0;
 	@Autowired
-	ProductService productService;
+	private ProductService productService;
 	@Autowired
-	ProductImageService productImageService;
+	private ProductImageService productImageService;
 	@Autowired
-	ProductPriceService productPriceService;
+	private ProductPriceService productPriceService;
 	@Autowired
-	DisplayInfoImageService displayInfoImageService;
+	private DisplayInfoImageService displayInfoImageService;
 
 	@GetMapping
 	public Map<String, Object> listProducts(
@@ -44,32 +44,43 @@ public class ProductController {
 
 		if (categoryId == ALL) {
 			int totalCount = productService.getAllProductsCount();
-			List<Product> productsList = productService.getAllProducts(start);
-			int productsCount = productsList.size();
-			map.put("totalCount", totalCount);
-			map.put("productsCount", productsCount);
-			map.put("products", productsList);
+			if (totalCount > 0) {
+				map.put("totalCount", totalCount);
+				getProdutsInfo(map, start);
+			}
 		} else {
 			int totalCount = productService.getProductsCountByCategory(categoryId);
-			List<Product> productsList = productService.getProductsByCategory(start, categoryId);
-			int productsCount = productsList.size();
 			map.put("totalCount", totalCount);
-			map.put("productsCount", productsCount);
-			map.put("products", productsList);
+			if (totalCount > 0) {
+				getProdutsInfoByCate(map, start, categoryId);
+			}
 		}
-
 		return map;
+	}
+
+	private void getProdutsInfo(Map<String, Object> map, int start) {
+		List<Product> productsList = productService.getAllProducts(start);
+		int productsCount = productsList.size();
+		map.put("productsCount", productsCount);
+		map.put("products", productsList);
+	}
+
+	private void getProdutsInfoByCate(Map<String, Object> map, int start, int categoryId) {
+		List<Product> productsList = productService.getProductsByCategory(start, categoryId);
+		int productsCount = productsList.size();
+		map.put("productsCount", productsCount);
+		map.put("products", productsList);
 	}
 
 	@GetMapping("/{displayInfoId}")
 	public Map<String, Object> getOneProduct(@PathVariable(name = "displayInfoId") int displayInfoId) {
+		Map<String, Object> map = new LinkedHashMap<>();
 
 		DisplayInfoImage displayInfoImage = displayInfoImageService.getFileInfo(displayInfoId);
 		Product product = productService.getProduct(displayInfoId);
-		ProductImage productImage = productImageService.getProductImage(product.getId());
+		ProductImage productImage = productImageService.getProductMainImage(product.getId());
 		List<ProductPrice> productPrices = productPriceService.getProductPrices(product.getId());
 
-		Map<String, Object> map = new LinkedHashMap<>();
 		map.put("product", product);
 		map.put("productImages", productImage);
 		map.put("displayInfoImages", displayInfoImage);

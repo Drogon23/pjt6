@@ -1,5 +1,7 @@
 package com.nts.pjt3.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +13,21 @@ import com.nts.pjt3.service.ProductImageService;
 public class ProductImageServiceImpl implements ProductImageService {
 
 	@Autowired
-	ProductImageDao productImageDao;
+	private ProductImageDao productImageDao;
 
 	@Override
-	public ProductImage getProductImage(int productId) {
-		return productImageDao.selectByProductId(productId);
+	public ProductImage getProductMainImage(int productId) {
+		return productImageDao.selectMainImageByProductId(productId);
+	}
+
+	@Override
+	public ProductImage getProductThImage(int productId) {
+		return productImageDao.selectThImageByProductId(productId);
+	}
+
+	@Override
+	public List<ProductImage> getProductEtcImage(int productId) {
+		return productImageDao.selectEtcImageByProductId(productId);
 	}
 
 }

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
     <title>네이버 예약</title>
     <link type="text/css" rel="stylesheet" href="css/style.css" >
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 </head>
 
@@ -86,7 +87,7 @@
 
 
     <script type="rv-template" id="promotion_item">
-		<li class="item" style="background-image: url(http://10.67.9.105:8080/naver/img/{productId}_ma_{productImageId}.png);">
+		<li class="item" style="background-image: url(http://10.67.9.105:8080/img/{{productId}}_ma_{{productImageId}}.png);">
 			<a href="#"> <span class="img_btm_border"></span> <span class="img_right_border"></span> <span class="img_bg_gra"></span>
 				<div class="event_txt">
          	       <h4 class="event_txt_tit"></h4>
@@ -97,23 +98,23 @@
  		</li>
     </script>
 	<script type="rv-template" id="categories">
- 		<li class="item" data-category="{id}">
-			<a class="anchor"> <span>{name}</span> </a>
+ 		<li class="item" data-category="{{id}}">
+			<a class="anchor"> <span>{{name}}</span> </a>
 		</li>
 	</script>
 	<script type="rv-template" id="products_count">
-		<p class="event_lst_txt">바로 예매 가능한 행사가 <span class="pink">{count}개</span> 있습니다</p>
+		<p class="event_lst_txt">바로 예매 가능한 행사가 <span class="pink">{{totalCount}}개</span> 있습니다</p>
 	</script>
     <script type="rv-template" id="item_list">
         <li class="item">
-            <a href="detail.html?id={displayInfoId}" class="item_book">
+            <a href="detail?id={{displayInfoId}}" class="item_book">
                 <div class="item_preview">
-                    <img alt="{description}" class="img_thumb" src="http://211.249.62.123/productImages/{id}?type=th">
+                    <img alt="{{description}}" class="img_thumb" src="productImages/{{id}}">
                     <span class="img_border"></span>
                 </div>
                 <div class="event_txt">
-                    <h4 class="event_txt_tit"> <span>{description}</span> <small class="sm">{placeName}</small> </h4>
-                    <p class="event_txt_dsc">{content}</p>
+                    <h4 class="event_txt_tit"> <span>{{description}}</span> <small class="sm">{{placeName}}</small> </h4>
+                    <p class="event_txt_dsc">{{content}}</p>
                 </div>
             </a>
         </li>

@@ -20,7 +20,7 @@ import com.nts.pjt3.dto.Product;
 @ContextConfiguration(classes = {ApplicationConfig.class})
 public class ProductDaoTest {
 	@Autowired
-	ProductDao productDao;
+	private ProductDao productDao;
 
 	@After
 	public void tearDown() throws Exception {}

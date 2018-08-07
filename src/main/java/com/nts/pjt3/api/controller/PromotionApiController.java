@@ -1,4 +1,4 @@
-package com.nts.pjt3.controller;
+package com.nts.pjt3.api.controller;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -13,11 +13,11 @@ import com.nts.pjt3.dto.Promotion;
 import com.nts.pjt3.service.PromotionService;
 
 @RestController
-@RequestMapping(path = "/promotions")
-public class PromotionController {
+@RequestMapping(path = "api/promotions")
+public class PromotionApiController {
 
 	@Autowired
-	PromotionService promotionService;
+	private PromotionService promotionService;
 
 	@GetMapping
 	public Map<String, Object> listPromotions() {

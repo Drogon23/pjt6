@@ -1,4 +1,4 @@
-package com.nts.pjt3.controller;
+package com.nts.pjt3.api.controller;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -13,11 +13,11 @@ import com.nts.pjt3.dto.Category;
 import com.nts.pjt3.service.CategoryService;
 
 @RestController
-@RequestMapping(path = "/categories")
-public class CategoryController {
+@RequestMapping(path = "api/categories")
+public class CategoryApiController {
 
 	@Autowired
-	CategoryService categoryService;
+	private CategoryService categoryService;
 
 	@GetMapping
 	public Map<String, Object> listCategories() {

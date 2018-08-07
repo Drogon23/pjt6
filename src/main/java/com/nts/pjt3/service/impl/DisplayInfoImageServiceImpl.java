@@ -11,7 +11,7 @@ import com.nts.pjt3.service.DisplayInfoImageService;
 public class DisplayInfoImageServiceImpl implements DisplayInfoImageService{
 	
 	@Autowired
-	DisplayInfoImageDao displayInfoImageDao;
+	private DisplayInfoImageDao displayInfoImageDao;
 	
 	@Override
 	public DisplayInfoImage getFileInfo(int displayInfoId) {

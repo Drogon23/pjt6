@@ -18,7 +18,7 @@ import com.nts.pjt3.dto.Promotion;
 @ContextConfiguration(classes = {ApplicationConfig.class})
 public class PromotionDaoTest {
 	@Autowired
-	PromotionDao promotionDao;
+	private PromotionDao promotionDao;
 
 	@Test
 	public void testSelectAll() {

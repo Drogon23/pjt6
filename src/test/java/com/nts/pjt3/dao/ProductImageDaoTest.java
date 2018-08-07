@@ -15,11 +15,11 @@ import com.nts.pjt3.dto.ProductImage;
 @ContextConfiguration(classes = {ApplicationConfig.class})
 public class ProductImageDaoTest {
 	@Autowired
-	ProductImageDao productImageDao;
+	private ProductImageDao productImageDao;
 
 	@Test
 	public void testSelect() {
-		ProductImage productImage = productImageDao.selectByProductId(1);
+		ProductImage productImage = productImageDao.selectMainImageByProductId(1);
 		assertNotNull(productImage);
 		System.out.println(productImage.toString());
 	}

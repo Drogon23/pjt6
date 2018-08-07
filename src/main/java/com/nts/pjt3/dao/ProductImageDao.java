@@ -1,6 +1,7 @@
 package com.nts.pjt3.dao;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -22,8 +23,18 @@ public class ProductImageDao {
 		this.jdbc = new NamedParameterJdbcTemplate(dataSource);
 	}
 
-	public ProductImage selectByProductId(int productId) {
-		Map<String, Integer> params = Collections.singletonMap("productId", productId);
-		return jdbc.queryForObject(ProductImageDaoSqls.SELECT_BY_PRODUCT_ID, params, rowMapper);
+	public ProductImage selectThImageByProductId(int productId) {
+		Map<String, Object> params = Collections.singletonMap("productId", productId);
+		return jdbc.queryForObject(ProductImageDaoSqls.SELECT_TH_IMG_BY_PRODUCT_ID, params, rowMapper);
+	}
+
+	public ProductImage selectMainImageByProductId(int productId) {
+		Map<String, Object> params = Collections.singletonMap("productId", productId);
+		return jdbc.queryForObject(ProductImageDaoSqls.SELECT_MAIN_IMG_BY_PRODUCT_ID, params, rowMapper);
+	}
+
+	public List<ProductImage> selectEtcImageByProductId(int productId) {
+		Map<String, Object> params = Collections.singletonMap("productId", productId);
+		return jdbc.query(ProductImageDaoSqls.SELECT_ETC_IMG_BY_PRODUCT_ID, params, rowMapper);
 	}
 }

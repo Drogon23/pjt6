@@ -1288,7 +1288,8 @@ button {
     position: relative;
     display: inline-block;
     white-space: normal;
-    vertical-align: top
+    vertical-align: top;
+    height: 414px;
 }
 
 .group_visual .visual_img .item .img_bg:before,.group_visual .visual_img .item .visual_txt {
@@ -2989,7 +2990,7 @@ button {
     height: 177px;
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: 100% 177px;;
+    background-size: 100% 177px;
     box-sizing: border-box;
     
 }
@@ -3163,12 +3164,12 @@ button {
     font-size: 15px;
  	text-align: center;
     vertical-align: middle;
-    -webkit-tap-highlight-color: transparent
+    padding-right: 10px;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .event .section_event_tab .event_tab_lst>.item .anchor {
     display: inline-block;
-    margin-right: 10px;
     font-weight: 600;
     padding: 10px 4.5px 10px 4px;
     color: #000;

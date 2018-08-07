@@ -15,7 +15,7 @@ import com.nts.pjt3.dto.DisplayInfoImage;
 @ContextConfiguration(classes = {ApplicationConfig.class})
 public class DisplayInfoImageDaoTest {
 	@Autowired
-	DisplayInfoImageDao displayInfoImageDao;
+	private DisplayInfoImageDao displayInfoImageDao;
 
 	@Test
 	public void testSelectBydisplayInfoId() {
