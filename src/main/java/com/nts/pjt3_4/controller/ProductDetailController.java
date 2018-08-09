@@ -24,7 +24,7 @@ public class ProductDetailController {
 	private ProductImageService productImageService;
 	@Autowired
 	private DisplayInfoImageService displayInfoImageService;
-	
+
 	@GetMapping
 	public String productDetail(@RequestParam(name = "id") int displayInfoId, ModelMap modelMap) {
 

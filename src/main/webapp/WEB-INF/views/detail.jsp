@@ -233,12 +233,12 @@
 				</a> 
 				<span class="img_count" style="display:none;">1</span>
 			</div>
-            <h4 class="resoc_name"></h4>
+            <h4 class="resoc_name">${product.description}</h4>
             <p class="review">{{reservationUserComment.comment}}</p>
         </div>
         <div class="info_area">
         	<div class="review_info"> 
-				<span class="grade">{{reservationUserComment.score}}</span> 
+				<span class="grade">{{reservationUserComment.score}}.0</span> 
 				<span class="name">{{hideEmail reservationInfo.reservationEmail}}</span> 
 				<span class="date">{{dateFormat reservationInfo.reservationDate}}방문</span> 
 			</div>

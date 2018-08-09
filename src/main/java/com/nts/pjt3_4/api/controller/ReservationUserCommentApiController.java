@@ -37,7 +37,7 @@ public class ReservationUserCommentApiController {
 		map.put("commentsCount", commentsCount);
 		if (commentsCount > 0) {
 			List<ReservationUserComment> comments = reservationUserCommentService.getComments(productId, 0);
-			List<ReservationUserCommentInfoDto> commentsInfo =  new ArrayList<>();
+			List<ReservationUserCommentInfoDto> commentsInfo = new ArrayList<>();
 			float avgScore = reservationUserCommentService.getAvgScore(productId);
 			avgScore = Float.parseFloat(String.format("%.2f", avgScore));
 			for (ReservationUserComment comment : comments) {
@@ -48,7 +48,8 @@ public class ReservationUserCommentApiController {
 
 				}
 				ReservationUserCommentInfoDto reservationUserCommentInfoDto = new ReservationUserCommentInfoDto();
-				reservationUserCommentInfoDto.setReservationInfo(reservationInfoService.getReservationInfo(comment.getReservationInfoId()));
+				reservationUserCommentInfoDto
+					.setReservationInfo(reservationInfoService.getReservationInfo(comment.getReservationInfoId()));
 				reservationUserCommentInfoDto.setReservationUserComment(comment);
 				commentsInfo.add(reservationUserCommentInfoDto);
 			}
