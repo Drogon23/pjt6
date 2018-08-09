@@ -1,43 +1,43 @@
 
 document.addEventListener("DOMContentLoaded", function() {
 
-	loadPromotions();
-	initCategories();
+	loadPromotions("api/promotions");
+	initCategories("api/categories");
 	let categoryBox = document.querySelector("div.section_event_tab");
 	categoryBox.addEventListener("click", function(evt){
 		changeCategory(evt);
 	});
 	
-	getProducts(getStartValue(), getCategoryId());
+	getProducts("api/products", getStartValue(), getCategoryId());
 	
 	let moreButton = document.querySelector("div.more");
 	moreButton.addEventListener("click", function(evt){
 		if(evt.target.className ==="btn"){
-			getProducts(getStartValue(), getCategoryId());
+			getProducts("api/products", getStartValue(), getCategoryId());
 		}
 	});
 });
 
-
-function initCategories() {
-
+function sendAjax(url){
 	let oReq = new XMLHttpRequest();
+	oReq.open("GET", url);
+	oReq.send();
+	return oReq;
+}
 
+function initCategories(url) {
+	let oReq = sendAjax(url);
 	oReq.addEventListener("load", function() {
 		let data = JSON.parse(this.responseText);
 		let parent = document.querySelector("ul.event_tab_lst");
 		const template = document.querySelector("#categories").innerText;
 		addCompiledTemplate(data, parent, template);		
 	});
-
-	oReq.open("GET", "api/categories");
-	oReq.send();
 }
 
 
-function loadPromotions() {
-	let oReq = new XMLHttpRequest();
-
+function loadPromotions(url) {
+	let oReq = sendAjax(url);
 	oReq.addEventListener("load", function() {
 		let data = JSON.parse(this.responseText);
 		let parent = document.querySelector("ul.visual_img");
@@ -45,9 +45,6 @@ function loadPromotions() {
 		addCompiledTemplate(data, parent, template);		
 		promotionSetAnimator();
 	});
-
-	oReq.open("GET", "api/promotions");
-	oReq.send();
 }
 
 
@@ -96,14 +93,13 @@ function changeCategory(evt){
 		productsList.forEach(function(child){
 			child.innerHTML="";
 		})
-		getProducts(getStartValue(), getCategoryId());
+		getProducts("api/products", getStartValue(), getCategoryId());
 	}
 	
 }
 
-function getProducts(start, categoryId){
-	let oReq = new XMLHttpRequest();
-
+function getProducts(url, start, categoryId){
+	let oReq = sendAjax(url+"?start="+start+"&categoryId="+categoryId);
 	oReq.addEventListener("load", function() {
 		let data = JSON.parse(this.responseText);
 		modifyProductsCount(data);
@@ -111,9 +107,6 @@ function getProducts(start, categoryId){
 		changeStartValue(data);
 		checkPaging();
 	});
-
-	oReq.open("GET", "api/products?start="+start+"&categoryId="+categoryId);
-	oReq.send();
 }
 
 function modifyProductsCount(data){

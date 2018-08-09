@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.nts</groupId>
-	<artifactId>pjt3</artifactId>
+	<artifactId>pjt3_4</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>pjt3 Maven Webapp</name>
@@ -104,7 +104,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>pjt3</finalName>
+		<finalName>pjt34</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

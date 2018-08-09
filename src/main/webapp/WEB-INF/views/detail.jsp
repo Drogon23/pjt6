@@ -1,15 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <meta charset="utf-8">
     <meta name="description" content="네이버 예약, 네이버 예약이 연동된 곳 어디서나 바로 예약하고, 네이버 예약 홈(나의예약)에서 모두 관리할 수 있습니다.">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
     <title>네이버 예약</title>
     <link href="css/style.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <style>
         .container_visual {
             height: 414px;
@@ -38,11 +39,13 @@
                         </h1>
                         <a href="./myreservation.html" class="btn_my"> <span class="viewReservation" title="예약확인">예약확인</span> </a>
                     </header>
+                    <input type="hidden" id=displayInfoId value = "${displayInfoImage.displayInfoId}">
+                    <input type="hidden" id=productId value = "${product.id}">
                     <div class="pagination">
                         <div class="bg_pagination"></div>
                         <div class="figure_pagination">
                             <span class="num">1</span>
-                            <span class="num off">/ <span>${imgSize}</span></span>
+                            <span class="num off">/ <span id ="total_img_count">1</span></span>
                         </div>
                     </div>
                     <div class="group_visual">
@@ -57,16 +60,6 @@
                                             </div>
                                         </div>
                                     </li>
-                                    <c:if test="${imgSize>1}">
-                                    <li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="${etcImage.saveFileName}"> <span class="img_bg"></span>
-                                        <div class="visual_txt">
-                                            <div class="visual_txt_inn">
-                                                <h2 class="visual_txt_tit"> <span>${product.description}</span> </h2>
-                                                <p class="visual_txt_dsc"></p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    </c:if>
                                 </ul>
                             </div>
                             <div class="prev">
@@ -122,22 +115,12 @@
                         <div class="short_review_area">
                             <div class="grade_area">
                                 <!-- [D] 별점 graph_value는 퍼센트 환산하여 width 값을 넣어줌 -->
-                                <span class="graph_mask"> <em class="graph_value" style="width: 84%;"></em> </span>
-                                <strong class="text_value"> <span>4.2</span> <em class="total">5.0</em> </strong>
-                                <span class="join_count"><em class="green">52건</em> 등록</span>
+                                <span class="graph_mask"> <em class="graph_value" id = "graph_value" style="width: 0%;"></em> </span>
+                                <strong class="text_value"> <span id = "avgScore"></span> <em class="total">5.0</em> </strong>
+                                <span class="join_count"><em class="green" id = "commentCounts">0건</em> 등록</span>
                             </div>
                             <ul class="list_short_review">
-         		                <li class="list_item">
-                                    <div>
-                                        <div class="review_area no_img">
-                                            <h4 class="resoc_name"></h4>
-                                            <p class="review">좋은 공연이었습니다. <br>머큐쇼역활 하신분의 열창이 기억에 남는 반면에,,, 로미오는 별로 기억에 남지 않네요..</p>
-                                        </div>
-                                        <div class="info_area">
-                                            <div class="review_info"> <span class="grade">4.0</span> <span class="name">xero****</span> <span class="date">2017.3.4. 방문</span> </div>
-                                        </div>
-                                    </div>
-                                </li>	
+         		                
                             </ul>
                         </div>
                         <p class="guide"> <i class="spr_book2 ico_bell"></i> <span>네이버 예약을 통해 실제 방문한 이용자가 남긴 평가입니다.</span> </p>
@@ -207,8 +190,8 @@
                             </div>
 							<!-- [D] 모바일 브라우저에서 접근 시 column2 추가와 btn_navigation 요소 추가 -->
                             <div class="bottom_common_path column2">
-                                <a href="#" class="btn_path"> <i class="fn fn-path-find2"></i> <span>길찾기</span> </a>
-								<a href="#" class="btn_navigation before"> <i class="fn fn-navigation2"></i> <span>내비게이션</span> </a>
+                                <a class="btn_path"> <i class="fn fn-path-find2"></i> <span>길찾기</span> </a>
+								<a class="btn_navigation before"> <i class="fn fn-navigation2"></i> <span>내비게이션</span> </a>
                             </div>
                         </div>
                     </div>
@@ -228,5 +211,40 @@
     <div id="photoviwer"></div>
 </body>
 
- <script type="text/javascript" src="js/detail.js"></script>
+<script type="text/javascript" src="js/detail.js"></script>
+<script type="rv-template" id ="etc_image">
+	<li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="{{saveFileName}}"> <span class="img_bg"></span>
+ 	<div class="visual_txt">
+    	<div class="visual_txt_inn">
+        	<h2 class="visual_txt_tit"> <span>${product.description}</span> </h2>
+        	<p class="visual_txt_dsc"></p>
+  		</div>
+ 	</div>
+	</li>
+</script>
+<script type="rv-template" id ="comment">
+	{{#each commentsInfo}}
+	<li class="list_item">
+    <div>
+		<div class="review_area">
+        	<div class="thumb_area">
+            	<a href="#" class="thumb" title="이미지 크게 보기"> 
+					<img width="90" height="90" class="img_vertical_top" src="http://naverbooking.phinf.naver.net/20170306_3/1488772023601A4195_JPEG/image.jpg?type=f300_300" alt="리뷰이미지"> 
+				</a> 
+				<span class="img_count" style="display:none;">1</span>
+			</div>
+            <h4 class="resoc_name"></h4>
+            <p class="review">{{reservationUserComment.comment}}</p>
+        </div>
+        <div class="info_area">
+        	<div class="review_info"> 
+				<span class="grade">{{reservationUserComment.score}}</span> 
+				<span class="name">{{hideEmail reservationInfo.reservationEmail}}</span> 
+				<span class="date">{{dateFormat reservationInfo.reservationDate}}방문</span> 
+			</div>
+		</div>
+    </div>
+	</li>
+	{{/each}}
+</script>
 </html>
