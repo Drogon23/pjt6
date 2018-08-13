@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nts.pjt3_4.dto.Promotion;
+import com.nts.pjt3_4.dto.PromotionDto;
 import com.nts.pjt3_4.service.PromotionService;
 
 @RestController
@@ -21,7 +21,7 @@ public class PromotionApiController {
 
 	@GetMapping
 	public Map<String, Object> listPromotions() {
-		List<Promotion> promotions = promotionService.getAllPromotionProducts();
+		List<PromotionDto> promotions = promotionService.getAllPromotionProducts();
 
 		Map<String, Object> map = new LinkedHashMap<>();
 		map.put("items", promotions);

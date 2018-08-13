@@ -12,20 +12,20 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.nts.pjt3_4.dto.ReservationUserComment;
+import com.nts.pjt3_4.dto.ReservationUserCommentDto;
 import com.nts.pjt3_4.sql.ReservationUserCommentDaoSqls;
 
 @Repository
 public class ReservationUserCommentDao {
 	private NamedParameterJdbcTemplate jdbc;
-	private RowMapper<ReservationUserComment> rowMapper = BeanPropertyRowMapper
-		.newInstance(ReservationUserComment.class);
+	private RowMapper<ReservationUserCommentDto> rowMapper = BeanPropertyRowMapper
+		.newInstance(ReservationUserCommentDto.class);
 
 	public ReservationUserCommentDao(DataSource dataSource) {
 		this.jdbc = new NamedParameterJdbcTemplate(dataSource);
 	}
 
-	public List<ReservationUserComment> selectAll(int productId, int start, int limit) {
+	public List<ReservationUserCommentDto> selectAll(int productId, int start, int limit) {
 		Map<String, Integer> params = new HashMap<>();
 		params.put("productId", productId);
 		params.put("start", start);

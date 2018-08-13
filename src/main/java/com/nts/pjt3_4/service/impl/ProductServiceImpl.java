@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nts.pjt3_4.dao.ProductDao;
-import com.nts.pjt3_4.dto.Product;
+import com.nts.pjt3_4.dto.ProductDto;
 import com.nts.pjt3_4.service.ProductService;
 
 @Service
@@ -16,17 +16,17 @@ public class ProductServiceImpl implements ProductService {
 	private ProductDao productDao;
 
 	@Override
-	public List<Product> getAllProducts(int start) {
+	public List<ProductDto> getAllProducts(int start) {
 		return productDao.selectAll(start, ProductService.LIMIT);
 	}
 
 	@Override
-	public List<Product> getProductsByCategory(int start, int categoryId) {
+	public List<ProductDto> getProductsByCategory(int start, int categoryId) {
 		return productDao.selectByCategory(start, categoryId, ProductService.LIMIT);
 	}
 
 	@Override
-	public Product getProduct(int displayInfoId) {
+	public ProductDto getProduct(int displayInfoId) {
 		return productDao.select(displayInfoId);
 	}
 

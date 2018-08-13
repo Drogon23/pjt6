@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nts.pjt3_4.dto.Category;
+import com.nts.pjt3_4.dto.CategoryDto;
 import com.nts.pjt3_4.service.CategoryService;
 
 @RestController
@@ -21,7 +21,7 @@ public class CategoryApiController {
 
 	@GetMapping
 	public Map<String, Object> listCategories() {
-		List<Category> categories = categoryService.getAllCategories();
+		List<CategoryDto> categories = categoryService.getAllCategories();
 
 		Map<String, Object> map = new LinkedHashMap<>();
 		map.put("items", categories);

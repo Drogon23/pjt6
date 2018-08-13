@@ -1,6 +1,6 @@
 package com.nts.pjt3_4.dto;
 
-public class Category {
+public class CategoryDto {
 	private int id;
 	private String name;
 	private int count;

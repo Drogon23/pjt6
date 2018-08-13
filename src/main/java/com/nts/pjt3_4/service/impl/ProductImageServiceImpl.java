@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nts.pjt3_4.dao.ProductImageDao;
-import com.nts.pjt3_4.dto.ProductImage;
+import com.nts.pjt3_4.dto.ProductImageDto;
 import com.nts.pjt3_4.service.ProductImageService;
 
 @Service
@@ -16,17 +16,17 @@ public class ProductImageServiceImpl implements ProductImageService {
 	private ProductImageDao productImageDao;
 
 	@Override
-	public ProductImage getProductMainImage(int productId) {
+	public ProductImageDto getProductMainImage(int productId) {
 		return productImageDao.selectMainImageByProductId(productId);
 	}
 
 	@Override
-	public ProductImage getProductThImage(int productId) {
+	public ProductImageDto getProductThImage(int productId) {
 		return productImageDao.selectThImageByProductId(productId);
 	}
 
 	@Override
-	public List<ProductImage> getProductEtcImage(int productId) {
+	public List<ProductImageDto> getProductEtcImage(int productId) {
 		return productImageDao.selectEtcImageByProductId(productId);
 	}
 

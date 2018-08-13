@@ -2,7 +2,7 @@ package com.nts.pjt3_4.dto;
 
 import java.util.Date;
 
-public class ReservationUserComment {
+public class ReservationUserCommentDto {
 	private int id;
 	private int productId;
 	private int reservationInfoId;
@@ -10,7 +10,7 @@ public class ReservationUserComment {
 	private String comment;
 	private Date createDate;
 	private Date modifyDate;
-	private ReservationUserCommentImage reservationUserCommentImage;
+	private ReservationUserCommentImageDto reservationUserCommentImage;
 
 	public int getId() {
 		return id;
@@ -68,11 +68,11 @@ public class ReservationUserComment {
 		this.modifyDate = modifyDate;
 	}
 
-	public ReservationUserCommentImage getReservationUserCommentImage() {
+	public ReservationUserCommentImageDto getReservationUserCommentImage() {
 		return reservationUserCommentImage;
 	}
 
-	public void setReservationUserCommentImage(ReservationUserCommentImage reservationUserCommentImage) {
+	public void setReservationUserCommentImage(ReservationUserCommentImageDto reservationUserCommentImage) {
 		this.reservationUserCommentImage = reservationUserCommentImage;
 	}
 }

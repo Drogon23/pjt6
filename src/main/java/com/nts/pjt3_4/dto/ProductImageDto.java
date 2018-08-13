@@ -2,7 +2,7 @@ package com.nts.pjt3_4.dto;
 
 import java.util.Date;
 
-public class ProductImage {
+public class ProductImageDto {
 	private int productId;
 	private int productImageId;
 	private String type;

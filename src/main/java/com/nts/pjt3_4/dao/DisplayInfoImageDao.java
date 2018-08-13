@@ -10,20 +10,20 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.nts.pjt3_4.dto.DisplayInfoImage;
+import com.nts.pjt3_4.dto.DisplayInfoImageDto;
 import com.nts.pjt3_4.sql.DisplayInfoImageDaoSqls;
 
 @Repository
 public class DisplayInfoImageDao {
 
 	private NamedParameterJdbcTemplate jdbc;
-	private RowMapper<DisplayInfoImage> rowMapper = BeanPropertyRowMapper.newInstance(DisplayInfoImage.class);
+	private RowMapper<DisplayInfoImageDto> rowMapper = BeanPropertyRowMapper.newInstance(DisplayInfoImageDto.class);
 
 	public DisplayInfoImageDao(DataSource dataSource) {
 		this.jdbc = new NamedParameterJdbcTemplate(dataSource);
 	}
 
-	public DisplayInfoImage selectBydisplayInfoId(int displayInfoId) {
+	public DisplayInfoImageDto selectBydisplayInfoId(int displayInfoId) {
 		Map<String, Integer> params = Collections.singletonMap("displayInfoId", displayInfoId);
 		return jdbc.queryForObject(DisplayInfoImageDaoSqls.SELECT_BY_DISPLAYINFO_ID, params, rowMapper);
 	}

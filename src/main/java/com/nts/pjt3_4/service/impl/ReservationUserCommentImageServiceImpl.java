@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nts.pjt3_4.dao.ReservationUserCommentImageDao;
-import com.nts.pjt3_4.dto.ReservationUserCommentImage;
+import com.nts.pjt3_4.dto.ReservationUserCommentImageDto;
 import com.nts.pjt3_4.service.ReservationUserCommentImageService;
 
 @Service
@@ -14,7 +14,7 @@ public class ReservationUserCommentImageServiceImpl implements ReservationUserCo
 	private ReservationUserCommentImageDao reservationUserCommentImageDao;
 
 	@Override
-	public ReservationUserCommentImage getCommentImage(int commentId) {
+	public ReservationUserCommentImageDto getCommentImage(int commentId) {
 		return reservationUserCommentImageDao.selectByCommentId(commentId);
 	}
 

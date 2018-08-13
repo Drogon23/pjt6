@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nts.pjt3_4.dao.ProductDao">
+
+	<select id="selectAll" parameterType="int" resultType="ProductDto">
+		SELECT product.id, product.category_id, product.description, product.content, product.event, 
+		category.name, 
+		display_info.id AS displayInfoId, display_info.opening_hours, 
+		display_info.place_name, display_info.place_lot, display_info.place_street, display_info.tel, 
+		display_info.homepage, display_info.email, display_info.create_date, display_info.modify_date 
+		FROM display_info 
+		INNER JOIN product ON product.id = display_info.product_id 
+		INNER JOIN category ON product.category_id = category.id 
+		ORDER BY product.id ASC LIMIT #{start}, #{limit}
+	</select>
+	<select id="selectByCategory" parameterType="int" resultType="ProductDto">
+		SELECT product.id, product.category_id, product.description, product.content, product.event, 
+		category.name, 
+		display_info.id AS displayInfoId, display_info.opening_hours, 
+		display_info.place_name, display_info.place_lot, display_info.place_street, display_info.tel, 
+		display_info.homepage, display_info.email, display_info.create_date, display_info.modify_date 
+		FROM display_info 
+		INNER JOIN product ON product.id = display_info.product_id 
+		INNER JOIN category ON product.category_id = category.id 
+		WHERE product.category_id = #{categoryId} ORDER BY product.id ASC LIMIT #{start}, #{limit}
+	</select>
+	<select id="select" parameterType="int" resultType="ProductDto">
+		SELECT product.id, product.category_id, product.description, product.content, product.event, 
+		category.name, 
+		display_info.id AS displayInfoId, display_info.opening_hours, 
+		display_info.place_name, display_info.place_lot, display_info.place_street, display_info.tel, 
+		display_info.homepage, display_info.email, display_info.create_date, display_info.modify_date 
+		FROM display_info 
+		INNER JOIN product ON product.id = display_info.product_id 
+		INNER JOIN category ON product.category_id = category.id  WHERE display_info.id = #{displayInfoId}
+	</select>
+	<select id="countAllProduct" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM display_info
+	</select>
+	<select id="countAllProduct" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM display_info 
+		INNER JOIN product ON display_info.product_id = product.id WHERE category_id = #{categoryId}
+	</select>
+	
+</mapper>

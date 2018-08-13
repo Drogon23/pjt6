@@ -11,29 +11,29 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.nts.pjt3_4.dto.ProductImage;
+import com.nts.pjt3_4.dto.ProductImageDto;
 import com.nts.pjt3_4.sql.ProductImageDaoSqls;
 
 @Repository
 public class ProductImageDao {
 	private NamedParameterJdbcTemplate jdbc;
-	private RowMapper<ProductImage> rowMapper = BeanPropertyRowMapper.newInstance(ProductImage.class);
+	private RowMapper<ProductImageDto> rowMapper = BeanPropertyRowMapper.newInstance(ProductImageDto.class);
 
 	public ProductImageDao(DataSource dataSource) {
 		this.jdbc = new NamedParameterJdbcTemplate(dataSource);
 	}
 
-	public ProductImage selectThImageByProductId(int productId) {
+	public ProductImageDto selectThImageByProductId(int productId) {
 		Map<String, Object> params = Collections.singletonMap("productId", productId);
 		return jdbc.queryForObject(ProductImageDaoSqls.SELECT_TH_IMG_BY_PRODUCT_ID, params, rowMapper);
 	}
 
-	public ProductImage selectMainImageByProductId(int productId) {
+	public ProductImageDto selectMainImageByProductId(int productId) {
 		Map<String, Object> params = Collections.singletonMap("productId", productId);
 		return jdbc.queryForObject(ProductImageDaoSqls.SELECT_MAIN_IMG_BY_PRODUCT_ID, params, rowMapper);
 	}
 
-	public List<ProductImage> selectEtcImageByProductId(int productId) {
+	public List<ProductImageDto> selectEtcImageByProductId(int productId) {
 		Map<String, Object> params = Collections.singletonMap("productId", productId);
 		return jdbc.query(ProductImageDaoSqls.SELECT_ETC_IMG_BY_PRODUCT_ID, params, rowMapper);
 	}

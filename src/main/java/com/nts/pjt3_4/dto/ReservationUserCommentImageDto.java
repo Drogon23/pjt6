@@ -2,7 +2,7 @@ package com.nts.pjt3_4.dto;
 
 import java.util.Date;
 
-public class ReservationUserCommentImage {
+public class ReservationUserCommentImageDto {
 	private int id;
 	private int reservationInfoId;
 	private int reservationUserCommentId;

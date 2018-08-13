@@ -1,6 +1,6 @@
 package com.nts.pjt3_4.dto;
 
-public class Promotion {
+public class PromotionDto {
 	private int id;
 	private int productId;
 	private int categoryId;

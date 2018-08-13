@@ -8,7 +8,7 @@
     <meta name="description" content="네이버 예약, 네이버 예약이 연동된 곳 어디서나 바로 예약하고, 네이버 예약 홈(나의예약)에서 모두 관리할 수 있습니다.">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
     <title>네이버 예약</title>
-    <link href="css/style.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <style>
@@ -52,7 +52,7 @@
                         <div>
                             <div class="container_visual" style="width: 414px;">
                                 <ul class="visual_img detail_swipe">
-                                    <li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="${productImage.saveFileName}"> <span class="img_bg"></span>
+                                    <li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="/${productImage.saveFileName}"> <span class="img_bg"></span>
                                         <div class="visual_txt">
                                             <div class="visual_txt_inn">
                                                 <h2 class="visual_txt_tit"> <span>${product.description}</span> </h2>
@@ -125,7 +125,7 @@
                         </div>
                         <p class="guide"> <i class="spr_book2 ico_bell"></i> <span>네이버 예약을 통해 실제 방문한 이용자가 남긴 평가입니다.</span> </p>
                     </div>
-                    <a class="btn_review_more" href="./review.html"> <span>예매자 한줄평 더보기</span> <i class="fn fn-forward1"></i> </a>
+                    <a class="btn_review_more" href="/review/${displayInfoImage.displayInfoId}"> <span>예매자 한줄평 더보기</span> <i class="fn fn-forward1"></i> </a>
                 </div>
                 <div class="section_info_tab">
                     <!-- [D] tab 선택 시 anchor에 active 추가 -->
@@ -167,7 +167,7 @@
                     <div class="detail_location hide">
                         <div class="box_store_info no_topline">
                             <a href="#" class="store_location" title="지도웹으로 연결">
-                                <img class="store_map img_thumb" alt="map" src="${displayInfoImage.saveFileName}">
+                                <img class="store_map img_thumb" alt="map" src="/${displayInfoImage.saveFileName}">
                                 <span class="img_border"></span>
                                 <span class="btn_map"><i class="spr_book2 ico_mapview"></i></span>
                             </a>
@@ -211,9 +211,10 @@
     <div id="photoviwer"></div>
 </body>
 
-<script type="text/javascript" src="js/detail.js"></script>
+<script type="text/javascript" src="/js/detail.js"></script>
+<script type="text/javascript" src="/js/utilities.js"></script>
 <script type="rv-template" id ="etc_image">
-	<li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="{{saveFileName}}"> <span class="img_bg"></span>
+	<li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="/{{saveFileName}}"> <span class="img_bg"></span>
  	<div class="visual_txt">
     	<div class="visual_txt_inn">
         	<h2 class="visual_txt_tit"> <span>${product.description}</span> </h2>
@@ -226,13 +227,17 @@
 	{{#each commentsInfo}}
 	<li class="list_item">
     <div>
+		{{#if reservationUserComment.reservationUserCommentImage}}
 		<div class="review_area">
         	<div class="thumb_area">
             	<a href="#" class="thumb" title="이미지 크게 보기"> 
-					<img width="90" height="90" class="img_vertical_top" src="http://naverbooking.phinf.naver.net/20170306_3/1488772023601A4195_JPEG/image.jpg?type=f300_300" alt="리뷰이미지"> 
+					<img width="90" height="90" class="img_vertical_top" src="/{{reservationUserComment.reservationUserCommentImage.saveFileName}}" alt="리뷰이미지"> 
 				</a> 
 				<span class="img_count" style="display:none;">1</span>
 			</div>
+		{{else}}
+		<div class="review_area no_img">
+		{{/if}}
             <h4 class="resoc_name">${product.description}</h4>
             <p class="review">{{reservationUserComment.comment}}</p>
         </div>

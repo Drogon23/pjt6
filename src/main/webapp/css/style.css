@@ -789,6 +789,30 @@ button {
     background-color: #0aba16
 }
 
+.header_review {
+    position: relative;
+    width: 100%;
+    max-width: 414px;
+    height: 48px;
+    background-color: #fff;
+    border-bottom: 10px solid #c0c0c0;
+}
+
+.header_review .prdt_title {
+	text-align: center;
+	line-height: 48px;
+	font-weight: bold;
+    font-size: large;
+}
+
+.review_bar {
+	margin-top: 40px;
+	margin-bottom: 10px;
+	position: relative;
+	background-color: #c0c0c0;
+	border-bottom: 1px solid gray;
+}
+
 .btn_my,.logo {
     position: absolute;
     height: 48px
@@ -798,6 +822,14 @@ button {
     z-index: 100;
     top: 0;
     left: 0
+}
+
+.back {
+	position: absolute;
+    height: 48px;
+	z-index: 100;
+    top: 10px;
+    left: 20px;
 }
 
 .logo .lnk_logo {

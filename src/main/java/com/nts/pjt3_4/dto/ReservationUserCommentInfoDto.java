@@ -1,22 +1,22 @@
 package com.nts.pjt3_4.dto;
 
 public class ReservationUserCommentInfoDto {
-	private ReservationUserComment reservationUserComment;
-	private ReservationInfo reservationInfo;
+	private ReservationUserCommentDto reservationUserComment;
+	private ReservationInfoDto reservationInfo;
 
-	public ReservationUserComment getReservationUserComment() {
+	public ReservationUserCommentDto getReservationUserComment() {
 		return reservationUserComment;
 	}
 
-	public void setReservationUserComment(ReservationUserComment reservationUserComment) {
+	public void setReservationUserComment(ReservationUserCommentDto reservationUserComment) {
 		this.reservationUserComment = reservationUserComment;
 	}
 
-	public ReservationInfo getReservationInfo() {
+	public ReservationInfoDto getReservationInfo() {
 		return reservationInfo;
 	}
 
-	public void setReservationInfo(ReservationInfo reservationInfo) {
+	public void setReservationInfo(ReservationInfoDto reservationInfo) {
 		this.reservationInfo = reservationInfo;
 	}
 

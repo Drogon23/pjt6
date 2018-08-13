@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nts.pjt3_4.dao.CategoryDao;
-import com.nts.pjt3_4.dto.Category;
+import com.nts.pjt3_4.dto.CategoryDto;
 import com.nts.pjt3_4.service.CategoryService;
 
 @Service
@@ -16,7 +16,7 @@ public class CategoryServiceImpl implements CategoryService {
 	private CategoryDao categoryDao;
 
 	@Override
-	public List<Category> getAllCategories() {
+	public List<CategoryDto> getAllCategories() {
 		return categoryDao.selectAll();
 	}
 

@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.nts.pjt3_4.dto.DisplayInfoImage;
-import com.nts.pjt3_4.dto.Product;
-import com.nts.pjt3_4.dto.ProductImage;
+import com.nts.pjt3_4.dto.DisplayInfoImageDto;
+import com.nts.pjt3_4.dto.ProductDto;
+import com.nts.pjt3_4.dto.ProductImageDto;
 import com.nts.pjt3_4.service.DisplayInfoImageService;
 import com.nts.pjt3_4.service.ProductImageService;
 import com.nts.pjt3_4.service.ProductService;
@@ -25,12 +25,12 @@ public class ProductDetailController {
 	@Autowired
 	private DisplayInfoImageService displayInfoImageService;
 
-	@GetMapping
-	public String productDetail(@RequestParam(name = "id") int displayInfoId, ModelMap modelMap) {
+	@GetMapping("/{displayInfoId}")
+	public String productDetail(@PathVariable(name = "displayInfoId") int displayInfoId, ModelMap modelMap) {
 
-		DisplayInfoImage displayInfoImage = displayInfoImageService.getFileInfo(displayInfoId);
-		Product product = productService.getProduct(displayInfoId);
-		ProductImage productImage = productImageService.getProductMainImage(product.getId());
+		DisplayInfoImageDto displayInfoImage = displayInfoImageService.getFileInfo(displayInfoId);
+		ProductDto product = productService.getProduct(displayInfoId);
+		ProductImageDto productImage = productImageService.getProductMainImage(product.getId());
 		modelMap.addAttribute("displayInfoImage", displayInfoImage);
 		modelMap.addAttribute("product", product);
 		modelMap.addAttribute("productImage", productImage);

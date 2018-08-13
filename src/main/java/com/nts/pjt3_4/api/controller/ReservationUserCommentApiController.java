@@ -10,9 +10,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nts.pjt3_4.dto.ReservationUserComment;
+import com.nts.pjt3_4.dto.ReservationUserCommentDto;
 import com.nts.pjt3_4.dto.ReservationUserCommentInfoDto;
 import com.nts.pjt3_4.service.ReservationInfoService;
 import com.nts.pjt3_4.service.ReservationUserCommentImageService;
@@ -30,17 +31,20 @@ public class ReservationUserCommentApiController {
 	private ReservationInfoService reservationInfoService;
 
 	@GetMapping("/{productId}")
-	public Map<String, Object> listComment(@PathVariable(name = "productId") int productId) {
+	public Map<String, Object> listComment(@PathVariable(name = "productId") int productId,
+		@RequestParam(name = "start", required = false, defaultValue = "0") int start) {
 		Map<String, Object> map = new LinkedHashMap<>();
 
 		int commentsCount = reservationUserCommentService.getCount(productId);
 		map.put("commentsCount", commentsCount);
 		if (commentsCount > 0) {
-			List<ReservationUserComment> comments = reservationUserCommentService.getComments(productId, 0);
+			List<ReservationUserCommentDto> comments = reservationUserCommentService.getSixComments(productId, start);
 			List<ReservationUserCommentInfoDto> commentsInfo = new ArrayList<>();
+			
 			float avgScore = reservationUserCommentService.getAvgScore(productId);
 			avgScore = Float.parseFloat(String.format("%.2f", avgScore));
-			for (ReservationUserComment comment : comments) {
+			
+			for (ReservationUserCommentDto comment : comments) {
 				try {
 					comment.setReservationUserCommentImage(
 						reservationUserCommentImageService.getCommentImage(comment.getId()));

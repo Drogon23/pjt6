@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.nts.pjt3_4.config.ApplicationConfig;
 import com.nts.pjt3_4.dao.ProductDao;
-import com.nts.pjt3_4.dto.Product;
+import com.nts.pjt3_4.dto.ProductDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ApplicationConfig.class})
@@ -28,19 +28,19 @@ public class ProductDaoTest {
 
 	@Test
 	public void testSelectAll() {
-		List<Product> list = productDao.selectAll(0, 4);
+		List<ProductDto> list = productDao.selectAll(0, 4);
 		assertThat(list.size(), greaterThan(0));
 	}
 
 	@Test
 	public void testSelectByCategory() {
-		List<Product> list = productDao.selectByCategory(0, 4, 1);
+		List<ProductDto> list = productDao.selectByCategory(0, 4, 1);
 		assertThat(list.size(), greaterThan(0));
 	}
 
 	@Test
 	public void testSelect() {
-		Product product = productDao.select(1);
+		ProductDto product = productDao.select(1);
 		assertNotNull(product);
 	}
 
