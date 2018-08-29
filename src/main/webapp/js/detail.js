@@ -1,6 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", function() {
-	detail.loadEtcImage("/productImages/");
+	detail.loadEtcImage("/productImages/etc/");
 	detail.loadComments("/api/reservationUserComments/");
 	detail.addClickEvent();
 }) 
@@ -24,16 +24,20 @@ const detail = {
 			 document.querySelector("li.item._detail").children[0].setAttribute("class", "anchor");
 			 document.querySelector("li.item._path").children[0].setAttribute("class", "anchor active");
 		 });
-		  document.querySelector("li.item._detail").addEventListener("click", function(evt){
+		document.querySelector("li.item._detail").addEventListener("click", function(evt){
 			 document.querySelector("div.detail_location").setAttribute("class", "detail_location hide");
 			 document.querySelector("div.detail_area_wrap.hide").setAttribute("class", "detail_area_wrap");
 			 document.querySelector("li.item._detail").children[0].setAttribute("class", "anchor active");
 			 document.querySelector("li.item._path").children[0].setAttribute("class", "anchor");	
 		 });
+		document.querySelector("#reserve_btn").addEventListener("click", function(evt){
+			let displayInfoId = document.querySelector("#display_info_id").value;
+			window.location.href = "/reserve/"+displayInfoId;
+		});
 	},
 	loadComments : function(url) {
-		let productId = parseInt(document.querySelector("#productId").value);
-		utilities.sendAjaxAsGet(url+productId)
+		let productId = parseInt(document.querySelector("#product_id").value);
+		ajaxUtil.sendAjaxAsGet(url+productId)
 		.then(data =>{
 			return JSON.parse(data);
 		})
@@ -43,6 +47,8 @@ const detail = {
 		.then(jsonData=>{
 			if(jsonData.commentsCount>3){
 				jsonData.commentsInfo.splice(3,3);
+			}else {
+				document.querySelector("a.btn_review_more").style.display = "none";
 			}
 			const compiledTemplate = detail.compileCommentTemplate(jsonData);
 			detail.insertCompiledCommentTemplate(compiledTemplate);
@@ -52,10 +58,6 @@ const detail = {
 	compileCommentTemplate : function(data) {
 		const commentTemplate = document.querySelector("#comment").innerText;
 		let bindTemplate = Handlebars.compile(commentTemplate);
-		
-		Handlebars.registerHelper("hideEmail", function(reservationEmail) {
-			  return reservationEmail.substring(0,4)+"****";
-			});
 		Handlebars.registerHelper("dateFormat", function(reservationDate) {
 			let date = new Date(reservationDate);
 			date = date.toLocaleDateString().replace(/\s/g, "");
@@ -72,26 +74,22 @@ const detail = {
 		document.querySelector("#commentCounts").innerText = data.commentsCount+"건";
 	},
 	loadEtcImage : function(url) {
-		let displayInfoId = parseInt(document.querySelector("#displayInfoId").value);
-		utilities.sendAjaxAsGet(url+displayInfoId+"/etc")
+		let productId = document.querySelector("#product_id").value;
+		ajaxUtil.sendAjaxAsGet(url+productId)
 		.then(data =>{
-			return JSON.parse(data);
+			if(data === "success") {
+				detail.insertEtcImage();
+				detail.changeImgDisplay();
+				detail.imgMoveEvent();
+			}
 		})
 		.catch(status =>{
 			console.log(status);
 		})		
-		.then(jsonData =>{
-			if(jsonData.productEtcImageList.length>0){
-				detail.insertEtcImage(jsonData);
-				detail.changeImgDisplay();
-				detail.imgMoveEvent();
-			}
-		});		
 	},
-	insertEtcImage : function(data) {
+	insertEtcImage : function() {
 		const template = document.querySelector("#etc_image").innerText;
-		let bindTemplate = Handlebars.compile(template);
-		document.querySelector("ul.visual_img.detail_swipe").innerHTML+= bindTemplate(data.productEtcImageList[0]);
+		document.querySelector("ul.visual_img.detail_swipe").innerHTML+= template;
 	},
 	changeImgDisplay : function() {
 		document.querySelector("#total_img_count").innerText = 2;
@@ -110,11 +108,11 @@ const detail = {
 			detail.countUp(length);
 		});
 		document.querySelector("div.prev").addEventListener("click", function(evt){  
-			detail.initImgMoveRight(parent);
-			parent.insertAdjacentElement("afterbegin", parent.children[1]);
+			detail.initImgMoveRight(parent, length);
+			parent.insertAdjacentElement("afterbegin", parent.children[length-1]);
 			setTimeout(function() {
 				detail.imgMoveRight(parent);			  
-				},100);		
+				},0);		
 			detail.countDown(length);
 		});
 	},
@@ -154,11 +152,12 @@ const detail = {
 			parent.children[i].style.transition = "0s";
 		}	
 	},
-	initImgMoveRight : function(parent) {
-		for(let i=0; i<2; i++){
-			parent.children[i].style.transform = "translateX(-100%)";
-			parent.children[i].style.transition = "0s";
-		}	
+	initImgMoveRight : function(parent, length) {
+		parent.children[0].style.transform = "translateX(-100%)";
+		parent.children[0].style.transition = "0s";
+		parent.children[length-1].style.transform = "translateX(-100%)";
+		parent.children[length-1].style.transition = "0s";
+			
 	}
 }
 

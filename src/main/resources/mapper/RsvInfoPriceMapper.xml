@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nts.pjt3_4.dao.RsvInfoPriceDao">
+
+	<select id="select" parameterType="int" resultType="RsvInfoPriceDto">
+		SELECT 
+			id
+			,reservation_info_id
+			,product_price_id
+			,count
+		FROM reservation_info_price 
+		WHERE id = #{rsvInfoId}
+	</select>
+	
+	<insert id="insert" parameterType="list" useGeneratedKeys="true" keyProperty="id">
+	  INSERT INTO reservation_info_price 
+	  (
+		  reservation_info_id
+		  ,product_price_id
+		  ,count
+	  )
+	  VALUES 
+	  <foreach item="item" collection="list" separator="," >
+	    (
+		    #{item.reservationInfoId}
+		    ,#{item.productPriceId}
+		    ,#{item.count}
+	    )
+	  </foreach>	  
+	</insert>
+	
+</mapper>

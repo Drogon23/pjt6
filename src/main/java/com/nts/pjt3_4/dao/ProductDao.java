@@ -10,13 +10,10 @@ import com.nts.pjt3_4.dto.ProductDto;
 @Mapper
 public interface ProductDao {
 
-	public List<ProductDto> selectAll(@Param("start")int start, @Param("limit")int limit);
+	public List<ProductDto> selectByCategory(@Param("start") int start, @Param("categoryId") int categoryId,
+		@Param("limit") int limit);
 
-	public List<ProductDto> selectByCategory(@Param("start")int start, @Param("categoryId")int categoryId, @Param("limit")int limit);
+	public ProductDto select(@Param("displayInfoId") int displayInfoId);
 
-	public ProductDto select(@Param("displayInfoId")int displayInfoId);
-
-	public int countAllProduct();
-
-	public int countProductByCategory(@Param("categoryId")int categoryId);
+	public int countProductByCategory(@Param("categoryId") int categoryId);
 }

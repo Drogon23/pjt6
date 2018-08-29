@@ -3,6 +3,7 @@ package com.nts.pjt3_4.dto;
 public class PromotionDto {
 	private int id;
 	private int productId;
+	private int displayInfoId;
 	private int categoryId;
 	private String categoryName;
 	private String description;
@@ -22,6 +23,14 @@ public class PromotionDto {
 
 	public void setProductId(int productId) {
 		this.productId = productId;
+	}
+
+	public int getDisplayInfoId() {
+		return displayInfoId;
+	}
+
+	public void setDisplayInfoId(int displayInfoId) {
+		this.displayInfoId = displayInfoId;
 	}
 
 	public int getCategoryId() {

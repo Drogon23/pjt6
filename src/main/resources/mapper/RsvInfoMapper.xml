@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nts.pjt3_4.dao.RsvInfoDao">
+
+	<select id="select" parameterType="int" resultType="RsvInfoWithPriceDto">
+		SELECT 
+			id
+			,product_id
+			,reservation_name
+			,reservation_tel
+			,reservation_email
+			,reservation_date
+			,create_date
+			,modify_date 
+		FROM reservation_info 
+		WHERE id = #{rsvId}
+	</select>
+	
+	<select id="selectByEmail" parameterType="String" resultType="RsvInfoDto">
+		SELECT DISTINCT
+			rsvInfo.id
+			,rsvInfo.product_id
+			,rsvInfo.display_info_id
+			,rsvInfo.reservation_name
+			,rsvInfo.reservation_tel
+			,rsvInfo.reservation_email
+			,rsvInfo.reservation_date
+			,rsvInfo.create_date
+			,rsvInfo.modify_date 
+			,rsvInfo.cancel_flag
+			,prdt.description AS productDescription
+			,dpInfo.place_lot
+			,dpInfo.place_name
+		FROM reservation_info rsvInfo
+			,product prdt
+			,reservation_info_price rsvInfoPrice
+			,display_info dpInfo 
+		WHERE rsvInfo.reservation_email = #{rsvEmail}
+		AND rsvInfo.id = rsvInfoPrice.reservation_info_id
+		AND rsvInfo.product_id = prdt.id
+		AND rsvInfo.display_info_id	= dpInfo.id
+	</select>
+	
+	<select id="sumPrice" parameterType="int" resultType="float">
+		SELECT 
+			SUM(prdtPrice.price * rsvInfoPrice.count) 
+		FROM reservation_info_price rsvInfoPrice
+			,product_price prdtPrice
+		WHERE rsvInfoPrice.reservation_info_id = #{rsvId}
+		AND rsvInfoPrice.product_price_id = prdtPrice.id
+		GROUP BY rsvInfoPrice.reservation_info_id
+	</select>
+	
+	<insert id="insertRsvInfo" parameterType="RsvDto" useGeneratedKeys="true" keyProperty="rsvId">
+	  INSERT INTO 
+	  reservation_info 
+	  (
+		  product_id
+		  ,display_info_id
+		  ,reservation_name
+		  ,reservation_tel
+		  ,reservation_email
+		  ,reservation_date
+		  ,create_date
+		  ,modify_date
+	  )
+	  VALUES (
+		  #{productId}
+		  ,#{displayInfoId}
+		  ,#{reservationName}
+		  ,#{reservationTel}
+		  ,#{reservationEmail}
+		  ,STR_TO_DATE(#{reservationYearMonthDay},'%Y.%c.%e')
+		  ,NOW()
+		  ,NOW()
+	  )
+	</insert>
+	
+	<update id="updateCancelFlag" parameterType="int">
+		UPDATE reservation_info
+		SET
+			cancel_flag = 1
+		WHERE id = #{rsvId}
+	</update>
+	
+</mapper>

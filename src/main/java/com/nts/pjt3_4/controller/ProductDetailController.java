@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.nts.pjt3_4.dto.DisplayInfoImageDto;
 import com.nts.pjt3_4.dto.ProductDto;
-import com.nts.pjt3_4.dto.ProductImageDto;
 import com.nts.pjt3_4.service.DisplayInfoImageService;
-import com.nts.pjt3_4.service.ProductImageService;
 import com.nts.pjt3_4.service.ProductService;
 
 @Controller
@@ -21,8 +19,6 @@ public class ProductDetailController {
 	@Autowired
 	private ProductService productService;
 	@Autowired
-	private ProductImageService productImageService;
-	@Autowired
 	private DisplayInfoImageService displayInfoImageService;
 
 	@GetMapping("/{displayInfoId}")
@@ -30,10 +26,8 @@ public class ProductDetailController {
 
 		DisplayInfoImageDto displayInfoImage = displayInfoImageService.getFileInfo(displayInfoId);
 		ProductDto product = productService.getProduct(displayInfoId);
-		ProductImageDto productImage = productImageService.getProductMainImage(product.getId());
 		modelMap.addAttribute("displayInfoImage", displayInfoImage);
 		modelMap.addAttribute("product", product);
-		modelMap.addAttribute("productImage", productImage);
 
 		return "detail";
 	}

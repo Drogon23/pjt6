@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -23,10 +23,10 @@
         <div class="header fade">
             <header class="header_tit">
                 <h1 class="logo">
-                    <a href="/" class="lnk_logo" title="네이버"> <span class="spr_bi ico_n_logo">네이버</span> </a>
-                    <a href="/" class="lnk_logo" title="예약"> <span class="spr_bi ico_bk_logo">예약</span> </a>
+                    <a href="/mainpage" class="lnk_logo" title="네이버"> <span class="spr_bi ico_n_logo">네이버</span> </a>
+                    <a href="/mainpage" class="lnk_logo" title="예약"> <span class="spr_bi ico_bk_logo">예약</span> </a>
                 </h1>
-                <a href="#" class="btn_my"> <span title="예약확인">예약확인</span> </a>
+                <a href="/myreservation" class="btn_my"> <span title="예약확인"><c:if test = "${rsvEmail eq ''}">예약확인</c:if>${rsvEmail}</span> </a>
             </header>
         </div>
         <div class="ct main">
@@ -34,13 +34,13 @@
                 <div class="section_visual">
                     <header>
                         <h1 class="logo">
-                            <a href="/" class="lnk_logo" title="네이버"> <span class="spr_bi ico_n_logo">네이버</span> </a>
-                            <a href="/" class="lnk_logo" title="예약"> <span class="spr_bi ico_bk_logo">예약</span> </a>
+                            <a href="/mainpage" class="lnk_logo" title="네이버"> <span class="spr_bi ico_n_logo">네이버</span> </a>
+                            <a href="/mainpage" class="lnk_logo" title="예약"> <span class="spr_bi ico_bk_logo">예약</span> </a>
                         </h1>
-                        <a href="./myreservation.html" class="btn_my"> <span class="viewReservation" title="예약확인">예약확인</span> </a>
+                        <a href="/myreservation" class="btn_my"> <span class="viewReservation" title="예약확인"><c:if test = "${rsvEmail eq ''}">예약확인</c:if>${rsvEmail}</span> </a>
                     </header>
-                    <input type="hidden" id=displayInfoId value = "${displayInfoImage.displayInfoId}">
-                    <input type="hidden" id=productId value = "${product.id}">
+                    <input type="hidden" id=display_info_id value = "${displayInfoImage.displayInfoId}">
+                    <input type="hidden" id=product_id value = "${product.id}">
                     <div class="pagination">
                         <div class="bg_pagination"></div>
                         <div class="figure_pagination">
@@ -52,7 +52,7 @@
                         <div>
                             <div class="container_visual" style="width: 414px;">
                                 <ul class="visual_img detail_swipe">
-                                    <li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="/${productImage.saveFileName}"> <span class="img_bg"></span>
+                                    <li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="/productImages/${product.id}/ma"> <span class="img_bg"></span>
                                         <div class="visual_txt">
                                             <div class="visual_txt_inn">
                                                 <h2 class="visual_txt_tit"> <span>${product.description}</span> </h2>
@@ -108,7 +108,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="section_btn"> <button type="button" class="bk_btn"> <i class="fn fn-nbooking-calender2"></i> <span>예매하기</span> </button> </div>
+                <div class="section_btn"> <button type="button" class="bk_btn" id="reserve_btn"> <i class="fn fn-nbooking-calender2"></i> <span>예매하기</span> </button> </div>
                 <div class="section_review_list">
                     <div class="review_box">
                         <h3 class="title_h3">예매자 한줄평</h3>
@@ -167,7 +167,7 @@
                     <div class="detail_location hide">
                         <div class="box_store_info no_topline">
                             <a href="#" class="store_location" title="지도웹으로 연결">
-                                <img class="store_map img_thumb" alt="map" src="/${displayInfoImage.saveFileName}">
+                                <img class="store_map img_thumb" alt="map" src="/image/${displayInfoImage.saveFileName}">
                                 <span class="img_border"></span>
                                 <span class="btn_map"><i class="spr_book2 ico_mapview"></i></span>
                             </a>
@@ -212,9 +212,9 @@
 </body>
 
 <script type="text/javascript" src="/js/detail.js"></script>
-<script type="text/javascript" src="/js/utilities.js"></script>
+<script type="text/javascript" src="/js/ajaxUtil.js"></script>
 <script type="rv-template" id ="etc_image">
-	<li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="/{{saveFileName}}"> <span class="img_bg"></span>
+	<li class="item" style="width: 414px;"> <img alt="" class="img_thumb" src="/productImages/${product.id}/et"> <span class="img_bg"></span>
  	<div class="visual_txt">
     	<div class="visual_txt_inn">
         	<h2 class="visual_txt_tit"> <span>${product.description}</span> </h2>
@@ -227,11 +227,11 @@
 	{{#each commentsInfo}}
 	<li class="list_item">
     <div>
-		{{#if reservationUserComment.reservationUserCommentImage}}
+		{{#if reservationUserComment.rsvUserCmtImg}}
 		<div class="review_area">
         	<div class="thumb_area">
-            	<a href="#" class="thumb" title="이미지 크게 보기"> 
-					<img width="90" height="90" class="img_vertical_top" src="/{{reservationUserComment.reservationUserCommentImage.saveFileName}}" alt="리뷰이미지"> 
+            	<a href="/image/{{reservationUserComment.rsvUserCmtImg.saveFileName}}" class="thumb" title="이미지 크게 보기"> 
+					<img width="90" height="90" class="img_vertical_top" src="/image/{{reservationUserComment.rsvUserCmtImg.saveFileName}}" alt="리뷰이미지"> 
 				</a> 
 				<span class="img_count" style="display:none;">1</span>
 			</div>
@@ -244,7 +244,7 @@
         <div class="info_area">
         	<div class="review_info"> 
 				<span class="grade">{{reservationUserComment.score}}.0</span> 
-				<span class="name">{{hideEmail reservationInfo.reservationEmail}}</span> 
+				<span class="name">{{reservationInfo.reservationEmail}}</span> 
 				<span class="date">{{dateFormat reservationInfo.reservationDate}}방문</span> 
 			</div>
 		</div>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nts.pjt3_4.dao.ProductPriceDao">
+
+	<select id="selectAllByProductId" parameterType="int" resultType="ProductPrice">
+		SELECT 
+			id
+			,product_id
+			,price_type_name
+			,price
+			,discount_rate
+			,create_date
+			,modify_date 
+		FROM product_price 
+		WHERE product_id = #{productId} 
+		ORDER BY price
+	</select>
+	
+</mapper>

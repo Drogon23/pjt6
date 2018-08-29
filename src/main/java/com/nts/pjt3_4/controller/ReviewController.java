@@ -15,7 +15,7 @@ import com.nts.pjt3_4.service.ProductService;
 public class ReviewController {
 
 	@Autowired
-	ProductService productService;
+	private ProductService productService;
 
 	@GetMapping("/{displayInfoId}")
 	public String reviewPage(@PathVariable(name = "displayInfoId") int displayInfoId, ModelMap modelMap) {
@@ -25,4 +25,5 @@ public class ReviewController {
 		modelMap.addAttribute("displayInfoId", displayInfoId);
 		return "review";
 	}
+
 }

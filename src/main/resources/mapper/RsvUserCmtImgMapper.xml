@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nts.pjt3_4.dao.RsvUserCmtImgDao">
+
+	<select id="selectByCommentId" parameterType="int" resultType="RsvUserCmtImgDto">
+		SELECT 
+			rsvUserCmtImg.id
+			,rsvUserCmtImg.reservation_info_id
+			,rsvUserCmtImg.reservation_user_comment_id
+			,rsvUserCmtImg.file_id
+			,fileInfo.file_name
+			,fileInfo.save_file_name
+			,fileInfo.content_type
+			,fileInfo.delete_flag
+			,fileInfo.create_date
+			,fileInfo.modify_date 
+		FROM reservation_user_comment_image rsvUserCmtImg
+			,file_info fileInfo
+		WHERE rsvUserCmtImg.reservation_user_comment_id = #{commentId}
+		AND rsvUserCmtImg.file_id = fileInfo.id 
+	</select>
+	<insert id="insert" parameterType="map" >
+	  INSERT INTO 
+	  reservation_user_comment_image 
+	  (
+		  reservation_info_id
+		  ,reservation_user_comment_id
+		  ,file_id
+	  )
+	  VALUES (
+		  #{rsvInfoId}
+		  ,#{rsvUserCmtId}
+		  ,#{fileId}
+	  )
+	</insert>
+</mapper>

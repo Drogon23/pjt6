@@ -5,7 +5,6 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -51,23 +50,17 @@ public class DBConfig implements TransactionManagementConfigurer {
 	public PlatformTransactionManager transactionManger() {
 		return new DataSourceTransactionManager(dataSource());
 	}
-	
-	@Bean
-    public SqlSessionFactory sqlSessionFactory() throws Exception {
-      SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
-      sqlSessionFactory.setDataSource(dataSource());
-      org.apache.ibatis.session.Configuration config = new org.apache.ibatis.session.Configuration();
-      config.setMapUnderscoreToCamelCase(true);
-      sqlSessionFactory.setMapperLocations(
-		  new PathMatchingResourcePatternResolver().getResources("mapper/*.xml"));
-      sqlSessionFactory.setTypeAliasesPackage("com.nts.pjt3_4.dto");
-      return (SqlSessionFactory) sqlSessionFactory.getObject();
-    }
-	
-	@Bean
-    public SqlSessionTemplate sqlSession(SqlSessionFactory sqlSessionFactory) {
-    	return new SqlSessionTemplate(sqlSessionFactory);
-    }
 
+	@Bean
+	public SqlSessionFactory sqlSessionFactory() throws Exception {
+		SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
+		sqlSessionFactory.setDataSource(dataSource());
+		sqlSessionFactory.setMapperLocations(
+			new PathMatchingResourcePatternResolver().getResources("/mapper/*.xml"));
+		sqlSessionFactory.setTypeAliasesPackage("com.nts.pjt3_4.dto");
+		SqlSessionFactory factory = sqlSessionFactory.getObject();
+		factory.getConfiguration().setMapUnderscoreToCamelCase(true);
+		return factory;
+	}
 
 }

@@ -8,7 +8,7 @@ public class ProductImageDto {
 	private String type;
 	private int fileInfold;
 	private String fileName;
-	private String SaveFileName;
+	private String saveFileName;
 	private String contentType;
 	private int deleteFlag;
 	private Date createDate;
@@ -55,11 +55,11 @@ public class ProductImageDto {
 	}
 
 	public String getSaveFileName() {
-		return SaveFileName;
+		return saveFileName;
 	}
 
 	public void setSaveFileName(String saveFileName) {
-		SaveFileName = saveFileName;
+		this.saveFileName = saveFileName;
 	}
 
 	public String getContentType() {
@@ -97,7 +97,7 @@ public class ProductImageDto {
 	@Override
 	public String toString() {
 		return "ProductImage [productId=" + productId + ", productImageId=" + productImageId + ", type=" + type
-			+ ", fileInfold=" + fileInfold + ", fileName=" + fileName + ", SaveFileName=" + SaveFileName
+			+ ", fileInfold=" + fileInfold + ", fileName=" + fileName + ", saveFileName=" + saveFileName
 			+ ", contentType=" + contentType + ", deleteFlag=" + deleteFlag + ", createDate=" + createDate
 			+ ", modifyDate=" + modifyDate + "]";
 	}

@@ -18,16 +18,21 @@
 </head>
 <body>
 	<div id="container">
-		<div class="header">
+		<div class="header fade">
 			<header class="header_review">
 				<a href="/detail/${displayInfoId}" class="item_book"><h1 class="back">←</h1></a>
 				<p class="prdt_title">${product.description}</p>
 			</header>
 		</div>
-		<hr>
-		<div class="review_bar"></div>	
-		<div class="ct main">
-			<div>
+		<div class="ct">
+			<div class="ct_wrap">
+				<div class="top_title review_header">
+					<a href="/detail/${displayInfoId}" class="btn_back" title="이전 화면으로 이동"> <i class="fn fn-backward1"></i> </a>
+					<h2><span class="title">${product.description}</span></h2>
+					<input type="hidden" id=display_info_id value = "${displayInfoId}">
+                    <input type="hidden" id=product_id value = "${product.id}">
+                    <input type="hidden" id=rsv_id value = "${rsvId}">
+				</div>
 				<input type="hidden" id=productId value = "${product.id}">
 				<input type="hidden" id=start value = 0>
                 <div class="section_review_list">
@@ -53,16 +58,16 @@
                
 </body>
 <script type="text/javascript" src="/js/review.js"></script>
-<script type="text/javascript" src="/js/utilities.js"></script>
+<script type="text/javascript" src="/js/ajaxUtil.js"></script>
 <script type="rv-template" id ="comment">
 	{{#each commentsInfo}}
 	<li class="list_item">
     <div>
-		{{#if reservationUserComment.reservationUserCommentImage}}
+		{{#if reservationUserComment.rsvUserCmtImg}}
 		<div class="review_area">
         	<div class="thumb_area">
-            	<a href="#" class="thumb" title="이미지 크게 보기"> 
-					<img width="90" height="90" class="img_vertical_top" src="/{{reservationUserComment.reservationUserCommentImage.saveFileName}}" alt="리뷰이미지"> 
+            	<a href="/image/{{reservationUserComment.rsvUserCmtImg.saveFileName}}" class="thumb" title="이미지 크게 보기"> 
+					<img width="90" height="90" class="img_vertical_top" src="/image/{{reservationUserComment.rsvUserCmtImg.saveFileName}}" alt="리뷰이미지"> 
 				</a> 
 				<span class="img_count" style="display:none;">1</span>
 			</div>
@@ -75,7 +80,7 @@
         <div class="info_area">
         	<div class="review_info"> 
 				<span class="grade">{{reservationUserComment.score}}.0</span> 
-				<span class="name">{{hideEmail reservationInfo.reservationEmail}}</span> 
+				<span class="name">{{reservationInfo.reservationEmail}}</span> 
 				<span class="date">{{dateFormat reservationInfo.reservationDate}}방문</span> 
 			</div>
 		</div>

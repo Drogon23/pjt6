@@ -13,7 +13,7 @@ import com.nts.pjt3_4.dto.PromotionDto;
 import com.nts.pjt3_4.service.PromotionService;
 
 @RestController
-@RequestMapping(path = "api/promotions")
+@RequestMapping(path = "/api/promotions")
 public class PromotionApiController {
 
 	@Autowired

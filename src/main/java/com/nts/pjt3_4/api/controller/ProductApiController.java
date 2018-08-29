@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,20 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nts.pjt3_4.dto.DisplayInfoImageDto;
 import com.nts.pjt3_4.dto.ProductDto;
 import com.nts.pjt3_4.dto.ProductImageDto;
-import com.nts.pjt3_4.dto.ProductPriceDto;
-import com.nts.pjt3_4.dto.ReservationUserCommentDto;
+import com.nts.pjt3_4.dto.ProductPrice;
+import com.nts.pjt3_4.dto.RsvUserCmtDto;
 import com.nts.pjt3_4.service.DisplayInfoImageService;
 import com.nts.pjt3_4.service.ProductImageService;
 import com.nts.pjt3_4.service.ProductPriceService;
 import com.nts.pjt3_4.service.ProductService;
-import com.nts.pjt3_4.service.ReservationUserCommentImageService;
-import com.nts.pjt3_4.service.ReservationUserCommentService;
+import com.nts.pjt3_4.service.RsvUserCmtImgService;
+import com.nts.pjt3_4.service.RsvUserCmtService;
 
 @RestController
-@RequestMapping(path = "api/products")
+@RequestMapping(path = "/api/products")
 public class ProductApiController {
 
-	private static final int ALL = 0;
 	@Autowired
 	private ProductService productService;
 	@Autowired
@@ -39,9 +37,9 @@ public class ProductApiController {
 	@Autowired
 	private DisplayInfoImageService displayInfoImageService;
 	@Autowired
-	private ReservationUserCommentService reservationUserCommentService;
+	private RsvUserCmtService rsvUserCmtService;
 	@Autowired
-	private ReservationUserCommentImageService reservationUserCommentImageService;
+	private RsvUserCmtImgService rsvUserCmtImgService;
 
 	@GetMapping
 	public Map<String, Object> listProducts(
@@ -49,35 +47,15 @@ public class ProductApiController {
 		@RequestParam(name = "start", required = false, defaultValue = "0") int start) {
 
 		Map<String, Object> map = new LinkedHashMap<>();
-
-		if (categoryId == ALL) {
-			int totalCount = productService.getAllProductsCount();
-			if (totalCount > 0) {
-				map.put("totalCount", totalCount);
-				getProdutsInfo(map, start);
-			}
-		} else {
-			int totalCount = productService.getProductsCountByCategory(categoryId);
-			map.put("totalCount", totalCount);
-			if (totalCount > 0) {
-				getProdutsInfoByCate(map, start, categoryId);
-			}
+		int totalCount = productService.getProductsCountByCategory(categoryId);
+		map.put("totalCount", totalCount);
+		if (totalCount > 0) {
+			List<ProductDto> productsList = productService.getProductsByCategory(start, categoryId);
+			int productsCount = productsList.size();
+			map.put("productsCount", productsCount);
+			map.put("products", productsList);
 		}
 		return map;
-	}
-
-	private void getProdutsInfo(Map<String, Object> map, int start) {
-		List<ProductDto> productsList = productService.getAllProducts(start);
-		int productsCount = productsList.size();
-		map.put("productsCount", productsCount);
-		map.put("products", productsList);
-	}
-
-	private void getProdutsInfoByCate(Map<String, Object> map, int start, int categoryId) {
-		List<ProductDto> productsList = productService.getProductsByCategory(start, categoryId);
-		int productsCount = productsList.size();
-		map.put("productsCount", productsCount);
-		map.put("products", productsList);
 	}
 
 	@GetMapping("/{displayInfoId}")
@@ -86,29 +64,25 @@ public class ProductApiController {
 
 		DisplayInfoImageDto displayInfoImage = displayInfoImageService.getFileInfo(displayInfoId);
 		ProductDto product = productService.getProduct(displayInfoId);
-		ProductImageDto productImage = productImageService.getProductMainImage(product.getId());
-		List<ProductPriceDto> productPrices = productPriceService.getProductPrices(product.getId());
+		ProductImageDto productImage = productImageService.getProductImageByType(product.getId(), "ma");
+		List<ProductPrice> productPrices = productPriceService.getProductPrices(product.getId());
 		map.put("product", product);
 		map.put("productImages", productImage);
 		map.put("displayInfoImages", displayInfoImage);
 
-		int commentsCount = reservationUserCommentService.getCount(product.getId());
-		float avgScore = reservationUserCommentService.getAvgScore(product.getId());
-		avgScore = Float.parseFloat(String.format("%.2f", avgScore));
+		int commentsCount = rsvUserCmtService.getCount(product.getId());
 		if (commentsCount > 0) {
-			List<ReservationUserCommentDto> comments = reservationUserCommentService.getThreeComments(product.getId(), 0);
-			comments.forEach(comment -> {
-				try {
-					comment.setReservationUserCommentImage(
-						reservationUserCommentImageService.getCommentImage(comment.getId()));
-				} catch (EmptyResultDataAccessException e) {
-
-				}
-			});
+			float avgScore = rsvUserCmtService.getAvgScore(product.getId());
+			avgScore = Float.parseFloat(String.format("%.1f", avgScore));
+			List<RsvUserCmtDto> comments = rsvUserCmtService.getThreeComments(product.getId(), 0);
+			for (RsvUserCmtDto comment : comments) {
+				comment.setRsvUserCmtImg(
+					rsvUserCmtImgService.getCommentImage(comment.getId()));
+			}
 			map.put("comments", comments);
 			map.put("avgScore", avgScore);
 		} else {
-			map.put("comments", Collections.EMPTY_MAP);
+			map.put("comments", Collections.emptyMap());
 			map.put("avgScore", 0);
 		}
 

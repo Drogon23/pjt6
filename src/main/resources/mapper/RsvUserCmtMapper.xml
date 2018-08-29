@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nts.pjt3_4.dao.RsvUserCmtDao">
+
+	<select id="selectAll" parameterType="map" resultType="RsvUserCmtDto">
+		SELECT 
+			id
+			,product_id
+			,reservation_info_id AS rsvId
+			,score
+			,comment
+			,create_date
+			,modify_date 
+		FROM reservation_user_comment 
+		WHERE product_id = #{productId}
+		ORDER BY id 
+		DESC LIMIT #{start}, #{limit}
+	</select>
+	<select id="countByProductId" parameterType="int" resultType="int">
+		SELECT
+			COUNT(*) 
+		FROM reservation_user_comment 
+		WHERE product_id = #{productId}
+	</select>
+	<select id="avgScore" parameterType="int" resultType="float">
+		SELECT 
+			AVG(score) 
+		FROM reservation_user_comment 
+		WHERE product_id = #{productId}
+	</select>
+	<insert id="insert" parameterType="CommentDto" useGeneratedKeys="true" keyProperty="id">
+		 INSERT INTO 
+		 reservation_user_comment 
+		 (
+			 product_id
+			 ,reservation_info_id
+			 ,score
+			 ,comment
+			 ,create_date
+			 ,modify_date
+		 )
+		 VALUES (
+			 #{productId}
+			 ,#{rsvId}
+			 ,#{score}
+			 ,#{comment}
+			 ,NOW()
+			 ,NOW()
+		 )
+	</insert>
+</mapper>

@@ -8,7 +8,7 @@ const review = {
 	loadComments : function(url) {
 		let productId = parseInt(document.querySelector("#productId").value);
 		let start = parseInt(document.querySelector("#start").value);
-		utilities.sendAjaxAsGet(url+productId+"?start="+start)
+		ajaxUtil.sendAjaxAsGet(url+productId+"?start="+start)
 		.then(data =>{
 			return JSON.parse(data);
 		})
@@ -19,15 +19,15 @@ const review = {
 			const compiledTemplate = review.compileCommentTemplate(jsonData);
 			review.insertCompiledCommentTemplate(compiledTemplate);
 			review.changeCommentData(jsonData);
+			let reviewBox = document.querySelector("html");
+			if(reviewBox.scrollHeight === reviewBox.clientHeight && jsonData.commentsCount === 6) {
+				review.loadComments("/api/reservationUserComments/");
+			}
 		})	
 	},	
 	compileCommentTemplate : function(data) {
 		const commentTemplate = document.querySelector("#comment").innerText;
 		let bindTemplate = Handlebars.compile(commentTemplate);
-		
-		Handlebars.registerHelper("hideEmail", function(reservationEmail) {
-			  return reservationEmail.substring(0,4)+"****";
-			});
 		Handlebars.registerHelper("dateFormat", function(reservationDate) {
 			let date = new Date(reservationDate);
 			date = date.toLocaleDateString().replace(/\s/g, "");
@@ -48,7 +48,7 @@ const review = {
 	addScrollEvent : function() {
 		let reviewBox = document.querySelector("html");
 		window.addEventListener("scroll", function(evt) {
-			if (reviewBox.scrollTop == reviewBox.scrollHeight - reviewBox.clientHeight) {
+			if (reviewBox.scrollTop === reviewBox.scrollHeight - reviewBox.clientHeight) {
 				review.loadComments("/api/reservationUserComments/");
 			}	
 		});

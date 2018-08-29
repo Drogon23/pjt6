@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nts.pjt3_4.dao.FileInfoDao">
+	<insert id="insert" parameterType="map" useGeneratedKeys="true" keyProperty="id">
+	  INSERT INTO 
+	  file_info 
+	  (
+		  file_name
+		  ,save_file_name
+		  ,content_type
+		  ,delete_flag
+		  ,create_date
+		  ,modify_date
+	  )
+	  VALUES (
+		  #{fileName}
+		  ,#{saveFileName}
+		  ,#{contentType}
+		  ,#{deleteFlag}
+		  ,NOW()
+		  ,NOW()
+	  )
+	</insert>
+</mapper>
